@@ -168,7 +168,12 @@ class _MyAppState extends State<MyApp> {
       suffixes: [
         Icon(Icons.camera),
         const SizedBox(width: 6.0),
-        Icon(Icons.cancel),
+        InkWell(
+          onTap: (){
+            controller3.text = "";
+          },
+          child: Icon(Icons.cancel),
+        ),
       ],
       text: "TEst",
       hints: ["hint0", "hint11", "hint222", "hint3333"],

@@ -181,6 +181,7 @@ class _FSearchState extends State<FSearch> {
       }
       widget.controller?._listener?.call();
     });
+
     /// 首次初始化文字
     if (widget.controller != null && widget.text != null) {
       widget.controller.text = widget.text;
@@ -316,6 +317,8 @@ class _FSearchState extends State<FSearch> {
               key: ValueKey(index),
               child: Container(
                 height: inputHeight,
+                alignment:
+                    widget.center ? Alignment.center : Alignment.centerLeft,
                 child: Text(
                   widget.hints[index],
                   style: widget.hintStyle ??
@@ -333,6 +336,8 @@ class _FSearchState extends State<FSearch> {
             child: IgnorePointer(
               key: ValueKey(index),
               child: Container(
+                alignment:
+                    widget.center ? Alignment.center : Alignment.centerLeft,
                 height: inputHeight,
                 child: Text(
                   widget.hints[index],
@@ -557,6 +562,7 @@ class FSearchController {
     if (_text != value) {
       _text = value;
       _state?.controller?.text = _text;
+      _listener?.call();
     }
   }
 
