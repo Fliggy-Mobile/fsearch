@@ -1,3 +1,4 @@
+import 'package:ffloat/ffloat.dart';
 import 'package:flutter/material.dart';
 
 import 'color.dart';
@@ -49,4 +50,27 @@ Padding buildDesc(String desc) {
           fontSize: 12,
         ),
       ));
+}
+
+void searching(BuildContext context) {
+  dialog(context, "Searching...");
+}
+
+void dialog(BuildContext context, String msg) {
+  showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  msg,
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
+              ],
+            ),
+            backgroundColor: Colors.black45,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          ));
 }

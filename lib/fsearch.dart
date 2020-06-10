@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+/// [hint] 交换动画类型
+///
+/// [hint] Swap animation types
 enum FSearchAnimationType {
   /// 渐变动画
   ///
@@ -19,7 +22,14 @@ enum FSearchAnimationType {
   Scroll,
 }
 
+/// [FSearch] 用于处理搜索模块。支持边框、边角、背景等诸多配置效果。支持不同风格的多 [hint] 切换动画。
+///
+/// [FSearch] is used to process the search module. Support many configuration effects such as border, corner, background and so on.
+/// Support multiple [hint] switching animations of different styles.
 class FSearch extends StatefulWidget {
+  /// 详见 [FSearchController]
+  ///
+  /// See [FSearchController] for details
   final FSearchController controller;
 
   final double width;
@@ -27,6 +37,8 @@ class FSearch extends StatefulWidget {
   final double height;
 
   final String text;
+
+  final ValueChanged<String> onSearch;
 
   final FSearchCorner corner;
 
@@ -115,6 +127,7 @@ class FSearch extends StatefulWidget {
     this.hintPrefix,
     this.controller,
     this.hintSwitchType = FSearchAnimationType.Scroll,
+    this.onSearch,
   }) : super(key: key);
 
   @override
@@ -163,6 +176,8 @@ class _FSearchState extends State<FSearch> {
     controller = TextEditingController();
 
     /// 输入监听
+    ///
+    /// Input monitor
     controller.addListener(() {
       bool hasText = false;
       if (controller.value.text != null && controller.value.text.length > 0) {
@@ -184,6 +199,8 @@ class _FSearchState extends State<FSearch> {
     });
 
     /// 首次初始化文字
+    ///
+    /// Initialize text for the first time
     if (widget.controller != null && widget.text != null) {
       widget.controller.text = widget.text;
     } else if (widget.text != null) {
@@ -191,6 +208,8 @@ class _FSearchState extends State<FSearch> {
     }
 
     /// 焦点监听
+    ///
+    /// Focus monitoring
     focusNode.addListener(() {
       if (focusNode.hasFocus && widget.stopHintSwitchOnFocus) {
         switchTimer?.cancel();
@@ -207,12 +226,12 @@ class _FSearchState extends State<FSearch> {
         scrollAnimPlaying) {
       scrollAnimPlaying = false;
       if (scrollHintCurrentIndex == 0) {
-        setState((){
-            hintSwitchTop_0 = 0;
-            hintSwitchTop_1 = inputHeight;
+        setState(() {
+          hintSwitchTop_0 = 0;
+          hintSwitchTop_1 = inputHeight;
         });
       } else {
-        setState((){
+        setState(() {
           hintSwitchTop_0 = inputHeight;
           hintSwitchTop_1 = 0;
         });
@@ -257,7 +276,7 @@ class _FSearchState extends State<FSearch> {
       height: widget.height,
       decoration: decoration,
       alignment: Alignment.center,
-      padding: widget.padding,
+//      padding: widget.padding,
       margin: widget.margin,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -302,6 +321,7 @@ class _FSearchState extends State<FSearch> {
       cursorColor: widget.cursorColor,
       cursorWidth: widget.cursorWidth,
       cursorRadius: Radius.circular(widget.cursorRadius),
+      onSubmitted: widget.onSearch,
     );
     children.add(textField);
 
@@ -312,114 +332,137 @@ class _FSearchState extends State<FSearch> {
           Widget hintSwitcher = buildFadeSwitcher();
           children.add(hintSwitcher);
         } else if (widget.hintSwitchType == FSearchAnimationType.Scale) {
-          Widget hintSwitcher = AnimatedSwitcher(
-            child: IgnorePointer(
-              key: ValueKey(index),
-              child: Container(
-                alignment:
-                    widget.center ? Alignment.center : Alignment.centerLeft,
-                height: inputHeight,
-                child: Text(
-                  widget.hints[index],
-                  style: widget.hintStyle ??
-                      style.copyWith(
-                        color: Colors.grey,
-                      ),
-                ),
-              ),
-            ),
-            duration: widget.hintSwitchAnimDuration,
-            transitionBuilder: (child, animation) => ScaleTransition(
-              scale: animation,
-              child: child,
-              alignment: Alignment.centerLeft,
-            ),
-          );
+          Widget hintSwitcher = buildScaleSwitcher();
           children.add(hintSwitcher);
         } else {
           /// 滚动动画
           ///
           /// transition anim
-          Widget hintSwitch_0 = AnimatedPositioned(
-            top: hintSwitchTop_0,
-            child: IgnorePointer(
-              child: Container(
-                height: inputHeight,
-                alignment: Alignment.center,
-                child: Text(
-                  hint_0,
-                  style: widget.hintStyle ??
-                      style.copyWith(
-                        color: Colors.grey,
-                      ),
-                ),
-              ),
-            ),
-            duration: hintSwitchDuration_0,
-            onEnd: () {
-              scrollAnimPlaying = false;
-              if (hintSwitchTop_0 == -inputHeight) {
-                setState(() {
-                  hintSwitchTop_0 = inputHeight;
-                  hintSwitchDuration_0 = Duration(milliseconds: 0);
-                });
-              } else {
-                hintSwitchDuration_0 = widget.hintSwitchAnimDuration;
-              }
-            },
-          );
-          Widget hintSwitch_1 = AnimatedPositioned(
-            top: hintSwitchTop_1,
-            child: IgnorePointer(
-              child: Container(
-                height: inputHeight,
-                alignment: Alignment.center,
-                child: Text(
-                  hint_1,
-                  style: widget.hintStyle ??
-                      style.copyWith(
-                        color: Colors.grey,
-                      ),
-                ),
-              ),
-            ),
-            duration: hintSwitchDuration_1,
-            onEnd: () {
-              if (hintSwitchTop_1 == -inputHeight) {
-                setState(() {
-                  hintSwitchTop_1 = inputHeight;
-                  hintSwitchDuration_1 = Duration(milliseconds: 0);
-                });
-              } else {
-                hintSwitchDuration_1 = widget.hintSwitchAnimDuration;
-              }
-            },
-          );
+          Widget hintSwitch_0 = buildScrollSwitch_1();
+          Widget hintSwitch_1 = buildScrollSwitch_2();
           children.add(hintSwitch_0);
           children.add(hintSwitch_1);
         }
-      } else {
-        children.add(IgnorePointer(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              widget.hintPrefix,
-              Text(
-                widget.hints[0],
-                style: widget.hintStyle ??
-                    style.copyWith(
-                      color: Colors.grey,
-                    ),
-              ),
-            ],
-          ),
-        ));
+      } else if (widget.hints != null && widget.hints.length > 0) {
+        children.add(buildNormalHint());
       }
     }
 
-    return Stack(
-      alignment: widget.center ? Alignment.center : Alignment.centerLeft,
-      children: children,
+    return Container(
+      padding: widget.padding,
+      child: Stack(
+        alignment: widget.center ? Alignment.center : Alignment.centerLeft,
+        children: children,
+      ),
+    );
+  }
+
+  Widget buildNormalHint() {
+    TextStyle style = widget.style ?? buildDefaultTextStyle();
+    return IgnorePointer(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          widget.hintPrefix,
+          Text(
+            widget.hints[0],
+            style: widget.hintStyle ??
+                style.copyWith(
+                  color: Colors.grey,
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  AnimatedPositioned buildScrollSwitch_2() {
+    TextStyle style = widget.style ?? buildDefaultTextStyle();
+    return AnimatedPositioned(
+      top: hintSwitchTop_1,
+      child: IgnorePointer(
+        child: Container(
+          height: inputHeight,
+          alignment: Alignment.center,
+          child: Text(
+            hint_1,
+            style: widget.hintStyle ??
+                style.copyWith(
+                  color: Colors.grey,
+                ),
+          ),
+        ),
+      ),
+      duration: hintSwitchDuration_1,
+      onEnd: () {
+        if (hintSwitchTop_1 == -inputHeight) {
+          setState(() {
+            hintSwitchTop_1 = inputHeight;
+            hintSwitchDuration_1 = Duration(milliseconds: 0);
+          });
+        } else {
+          hintSwitchDuration_1 = widget.hintSwitchAnimDuration;
+        }
+      },
+    );
+  }
+
+  Widget buildScrollSwitch_1() {
+    TextStyle style = widget.style ?? buildDefaultTextStyle();
+    return AnimatedPositioned(
+      top: hintSwitchTop_0,
+      child: IgnorePointer(
+        child: Container(
+          height: inputHeight,
+          alignment: Alignment.center,
+          child: Text(
+            hint_0,
+            style: widget.hintStyle ??
+                style.copyWith(
+                  color: Colors.grey,
+                ),
+          ),
+        ),
+      ),
+      duration: hintSwitchDuration_0,
+      onEnd: () {
+        scrollAnimPlaying = false;
+        if (hintSwitchTop_0 == -inputHeight) {
+          setState(() {
+            hintSwitchTop_0 = inputHeight;
+            hintSwitchDuration_0 = Duration(milliseconds: 0);
+          });
+        } else {
+          hintSwitchDuration_0 = widget.hintSwitchAnimDuration;
+        }
+      },
+    );
+  }
+
+  Widget buildScaleSwitcher() {
+    int index = hintIndex == -1 ? 0 : hintIndex;
+    TextStyle style = widget.style ?? buildDefaultTextStyle();
+    return AnimatedSwitcher(
+      child: IgnorePointer(
+        key: ValueKey(index),
+        child: Container(
+          alignment: widget.center ? Alignment.center : Alignment.centerLeft,
+          height: inputHeight,
+          child: Text(
+            widget.hints[index],
+            style: widget.hintStyle ??
+                style.copyWith(
+                  color: Colors.grey,
+                ),
+          ),
+        ),
+      ),
+      duration: widget.hintSwitchAnimDuration,
+      transitionBuilder: (child, animation) => ScaleTransition(
+        scale: animation,
+        child: child,
+        alignment: Alignment.centerLeft,
+      ),
     );
   }
 
@@ -563,14 +606,14 @@ class _FSearchState extends State<FSearch> {
 class FSearchController {
   _FSearchState _state;
 
-  String _text;
-
   String get text => (_state?.controller?.value?.text) ?? null;
 
   set text(String value) {
-    if (_text != value) {
-      _text = value;
-      _state?.controller?.text = _text;
+    if (_state?.controller?.text != value) {
+      _state?.controller?.clear();
+      _state?.controller?.text = value;
+      _state?.controller?.selection =
+          TextSelection.collapsed(offset: value?.length ?? 0);
       _listener?.call();
     }
   }
@@ -589,6 +632,14 @@ class FSearchController {
 
   setOnFocusChangedListener(ValueChanged<bool> listener) {
     _focusListener = listener;
+  }
+
+  requestFocus() {
+    _state?.focusNode?.requestFocus();
+  }
+
+  clearFocus() {
+    _state?.focusNode?.unfocus();
   }
 
   dispose() {
