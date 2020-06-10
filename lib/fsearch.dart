@@ -127,6 +127,7 @@ class _FSearchState extends State<FSearch> {
   int hintIndex = -1;
   double hintSwitchTop_0;
   double hintSwitchTop_1;
+  int scrollHintCurrentIndex = 0;
   double inputHeight;
   Duration hintSwitchDuration_0;
   Duration hintSwitchDuration_1;
@@ -202,23 +203,19 @@ class _FSearchState extends State<FSearch> {
   }
 
   void tryFixScrollAnim() {
-    if (scrollAnimPlaying) {
+    if (widget.hintSwitchType == FSearchAnimationType.Scroll &&
+        scrollAnimPlaying) {
       scrollAnimPlaying = false;
-      if (hintSwitchTop_0 == -inputHeight) {
-        setState(() {
+      if (scrollHintCurrentIndex == 0) {
+        setState((){
+            hintSwitchTop_0 = 0;
+            hintSwitchTop_1 = inputHeight;
+        });
+      } else {
+        setState((){
           hintSwitchTop_0 = inputHeight;
-          hintSwitchDuration_0 = Duration(milliseconds: 0);
+          hintSwitchTop_1 = 0;
         });
-      } else {
-        hintSwitchDuration_0 = widget.hintSwitchAnimDuration;
-      }
-      if (hintSwitchTop_1 == -inputHeight) {
-        setState(() {
-          hintSwitchTop_1 = inputHeight;
-          hintSwitchDuration_1 = Duration(milliseconds: 0);
-        });
-      } else {
-        hintSwitchDuration_1 = widget.hintSwitchAnimDuration;
       }
     }
   }
@@ -312,24 +309,7 @@ class _FSearchState extends State<FSearch> {
       if (widget.hintSwitchEnable && inputHeight != null) {
         int index = hintIndex == -1 ? 0 : hintIndex;
         if (widget.hintSwitchType == FSearchAnimationType.Fade) {
-          Widget hintSwitcher = AnimatedSwitcher(
-            child: IgnorePointer(
-              key: ValueKey(index),
-              child: Container(
-                height: inputHeight,
-                alignment:
-                    widget.center ? Alignment.center : Alignment.centerLeft,
-                child: Text(
-                  widget.hints[index],
-                  style: widget.hintStyle ??
-                      style.copyWith(
-                        color: Colors.grey,
-                      ),
-                ),
-              ),
-            ),
-            duration: widget.hintSwitchAnimDuration,
-          );
+          Widget hintSwitcher = buildFadeSwitcher();
           children.add(hintSwitcher);
         } else if (widget.hintSwitchType == FSearchAnimationType.Scale) {
           Widget hintSwitcher = AnimatedSwitcher(
@@ -443,6 +423,29 @@ class _FSearchState extends State<FSearch> {
     );
   }
 
+  Widget buildFadeSwitcher() {
+    int index = hintIndex == -1 ? 0 : hintIndex;
+    TextStyle style = widget.style ?? buildDefaultTextStyle();
+    Widget hintSwitcher = AnimatedSwitcher(
+      child: IgnorePointer(
+        key: ValueKey(index),
+        child: Container(
+          height: inputHeight,
+          alignment: widget.center ? Alignment.center : Alignment.centerLeft,
+          child: Text(
+            widget.hints[index],
+            style: widget.hintStyle ??
+                style.copyWith(
+                  color: Colors.grey,
+                ),
+          ),
+        ),
+      ),
+      duration: widget.hintSwitchAnimDuration,
+    );
+    return hintSwitcher;
+  }
+
   void playHintSwitchAnim() {
     if (!widget.hintSwitchEnable ||
         !showHint ||
@@ -489,7 +492,13 @@ class _FSearchState extends State<FSearch> {
             hint_1 = hints[hintIndex];
           }
           hintSwitchTop_0 = switchHintTop(hintSwitchTop_0);
+          if (hintSwitchTop_0 == 0) {
+            scrollHintCurrentIndex = 0;
+          }
           hintSwitchTop_1 = switchHintTop(hintSwitchTop_1);
+          if (hintSwitchTop_1 == 0) {
+            scrollHintCurrentIndex = 1;
+          }
         });
       }
       playHintSwitchAnim();
