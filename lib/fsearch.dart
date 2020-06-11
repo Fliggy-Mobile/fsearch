@@ -48,8 +48,6 @@ class FSearch extends StatefulWidget {
 
   final FSearchCornerStyle cornerStyle;
 
-  final ImageProvider backgroundImage;
-
   final Color backgroundColor;
 
   final Gradient gradient;
@@ -58,7 +56,7 @@ class FSearch extends StatefulWidget {
 
   final Color shadowColor;
 
-  final double shadowOffset;
+  final Offset shadowOffset;
 
   final Color cursorColor;
 
@@ -103,7 +101,6 @@ class FSearch extends StatefulWidget {
     this.strokeColor,
     this.strokeWidth,
     this.cornerStyle = FSearchCornerStyle.round,
-    this.backgroundImage,
     this.backgroundColor,
     this.gradient,
     this.shadowBlur,
@@ -142,6 +139,7 @@ class _FSearchState extends State<FSearch> {
   double hintSwitchTop_1;
   int scrollHintCurrentIndex = 0;
   double inputHeight;
+  double inputWidth;
   Duration hintSwitchDuration_0;
   Duration hintSwitchDuration_1;
 
@@ -156,8 +154,9 @@ class _FSearchState extends State<FSearch> {
   String get hint {
     String r;
     if (widget.hints != null && widget.hints.length > 0) {
-      if (hintIndex != -1) {
-        r = widget.hints[hintIndex];
+      int index = hintIndex + 1;
+      if (index > -1 && index < widget.hints.length) {
+        r = widget.hints[index];
       } else {
         r = widget.hints[0];
       }
@@ -293,9 +292,10 @@ class _FSearchState extends State<FSearch> {
       RenderBox box = inputKey.currentContext?.findRenderObject();
       if (widget.hints != null &&
           widget.hints.length > 1 &&
-          inputHeight == null) {
+          inputHeight != box.size.height) {
         setState(() {
           inputHeight = box.size.height;
+          inputWidth = box.size.width;
           hintSwitchTop_0 = 0;
           hintSwitchTop_1 = inputHeight;
           hint_0 = widget.hints[0];
@@ -359,19 +359,28 @@ class _FSearchState extends State<FSearch> {
 
   Widget buildNormalHint() {
     TextStyle style = widget.style ?? buildDefaultTextStyle();
+    List<Widget> children = [];
+    if (widget.hintPrefix != null) {
+      children.add(widget.hintPrefix);
+    }
+    children.add(LimitedBox(
+      maxWidth: inputWidth ?? 0.0,
+      child: Text(
+        widget.hints[0],
+        style: widget.hintStyle ??
+            style.copyWith(
+              color: Colors.grey,
+            ),
+        overflow: TextOverflow.ellipsis,
+      ),
+    ));
     return IgnorePointer(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          widget.hintPrefix,
-          Text(
-            widget.hints[0],
-            style: widget.hintStyle ??
-                style.copyWith(
-                  color: Colors.grey,
-                ),
-          ),
-        ],
+      child: Container(
+        width: inputWidth,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: children,
+        ),
       ),
     );
   }
@@ -381,15 +390,20 @@ class _FSearchState extends State<FSearch> {
     return AnimatedPositioned(
       top: hintSwitchTop_1,
       child: IgnorePointer(
-        child: Container(
-          height: inputHeight,
-          alignment: Alignment.center,
-          child: Text(
-            hint_1,
-            style: widget.hintStyle ??
-                style.copyWith(
-                  color: Colors.grey,
-                ),
+        child: LimitedBox(
+          maxWidth: inputWidth ?? 0.0,
+          child: Container(
+            height: inputHeight,
+            width: inputWidth,
+            alignment: widget.center ? Alignment.center : Alignment.centerLeft,
+            child: Text(
+              hint_1,
+              style: widget.hintStyle ??
+                  style.copyWith(
+                    color: Colors.grey,
+                  ),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ),
       ),
@@ -412,15 +426,19 @@ class _FSearchState extends State<FSearch> {
     return AnimatedPositioned(
       top: hintSwitchTop_0,
       child: IgnorePointer(
-        child: Container(
-          height: inputHeight,
-          alignment: Alignment.center,
-          child: Text(
-            hint_0,
-            style: widget.hintStyle ??
-                style.copyWith(
-                  color: Colors.grey,
-                ),
+        child: LimitedBox(
+          maxWidth: inputWidth ?? 0.0,
+          child: Container(
+            height: inputHeight,
+            alignment: widget.center ? Alignment.center : Alignment.centerLeft,
+            child: Text(
+              hint_0,
+              style: widget.hintStyle ??
+                  style.copyWith(
+                    color: Colors.grey,
+                  ),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ),
       ),
@@ -454,6 +472,7 @@ class _FSearchState extends State<FSearch> {
                 style.copyWith(
                   color: Colors.grey,
                 ),
+            overflow: TextOverflow.ellipsis,
           ),
         ),
       ),
@@ -461,7 +480,7 @@ class _FSearchState extends State<FSearch> {
       transitionBuilder: (child, animation) => ScaleTransition(
         scale: animation,
         child: child,
-        alignment: Alignment.centerLeft,
+        alignment: widget.center ? Alignment.center : Alignment.centerLeft,
       ),
     );
   }
@@ -481,6 +500,7 @@ class _FSearchState extends State<FSearch> {
                 style.copyWith(
                   color: Colors.grey,
                 ),
+            overflow: TextOverflow.ellipsis,
           ),
         ),
       ),
@@ -578,16 +598,9 @@ class _FSearchState extends State<FSearch> {
             borderRadius: borderRadius,
             side: borderSide,
           );
-    var decorationImage = widget.backgroundImage != null
-        ? DecorationImage(
-            fit: BoxFit.cover,
-            image: widget.backgroundImage,
-          )
-        : null;
     Decoration decoration = ShapeDecoration(
-        color: widget.backgroundColor,
+        color: widget.gradient == null ? widget.backgroundColor : null,
         gradient: widget.gradient,
-        image: decorationImage,
         shadows: widget.shadowColor != null && widget.shadowBlur != 0
             ? [
                 BoxShadow(
