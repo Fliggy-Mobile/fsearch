@@ -9,11 +9,11 @@
 
 <div align="center">
 
-<p>Help developers build the most beautiful search bar🍹.</p>
+<p>帮助开发者构建最美的搜索栏🍹。</p>
 
-<p>[FSearch] provides developers with a one-stop search bar construction service. Supports borders, corners, gradient background colors and shadows, as well as any number of prefix and suffix action buttons. Provides beautiful Hint animation.</p>
+<p>[FSearch] 为开发者提供了一站式的搜索栏构建服务。支持边框、边角、渐变背景色以及阴影，同时支持任意数量的前缀、后缀动作按钮。提供了精美的 Hint 动画。</p>
 
-<p><strong>Author：<a href="https://github.com/chenBingX">Newton</a>(<a href="coorchice.cb@alibaba-inc.com">coorchice.cb@alibaba-inc.com</a>)</strong></p>
+<p><strong>主理人：<a href="https://github.com/chenBingX">纽特</a>(<a href="coorchice.cb@alibaba-inc.com">coorchice.cb@alibaba-inc.com</a>)</strong></p>
 
 <p>
 
@@ -54,104 +54,103 @@
 |![](https://gw.alicdn.com/tfs/TB1XrOdJ1L2gK0jSZPhXXahvXXa-320-464.gif)|![](https://gw.alicdn.com/tfs/TB1x4CmJVP7gK0jSZFjXXc5aXXa-320-464.gif)|![](https://gw.alicdn.com/tfs/TB1iFAMXI4z2K4jSZKPXXXAYpXa-360-466.gif)|
 |![](https://gw.alicdn.com/tfs/TB1Pt1oJYY1gK0jSZTEXXXDQVXa-360-298.gif)|![](https://gw.alicdn.com/tfs/TB19oLDGKT2gK0jSZFvXXXnFXXa-360-212.gif)|![](https://gw.alicdn.com/tfs/TB19oLDGKT2gK0jSZFvXXXnFXXa-360-212.gif)|
 
-**English | [简体中文](https://github.com/Fliggy-Mobile/fsearch/blob/master/README_CN.md)**
+**[English](https://github.com/Fliggy-Mobile/fsearch) | 简体中文**
 
-> Like it? Please cast your **Star**  🥰 ！
+> 感觉还不错？请投出您的 **Star** 吧 🥰 ！
 
-# ✨ Features
+# ✨ 特性
 
-- Support beautiful border effect
+- 支持精美的边框效果
 
-- Provide rich corner configuration
+- 提供丰富的边角配置
 
-- Support stunning gradient effects
+- 支持惊艳的渐变效果
 
-- Provides easy to use shadow capabilities
+- 提供简单易用的阴影能力
 
-- Support any number of prefix and suffix action buttons
+- 支持任意数量的前缀、后缀动作按钮
 
-- Provide colorful, flexible and powerful Hint effects
+- 提供丰富多彩的、灵活强大 Hint 效果
 
-- Controllers that are easier to use for developers
+- 给开发者更易用的控制器
+
+# 🛠 使用指南
 
 
-# 🛠 Guide
+## ⚙️ 参数 & 接口
 
+### 🔩 FSearch 参数
 
-## ⚙️ Parameter & Interface
-
-### 🔩 FSearch Param
-
-|Param|Type|Necessary|Default|desc|
+|参数|类型|必要|默认值|说明|
 |---|---|:---:|---|---|
-|controller|FSearchController|false|null|Controller. See [FSearchController] for details|
-|width|double|false|null|width|
-|height|double|false|null|height|
-|text|String|false|null|Input content|
-|onSearch|ValueChanged<String>|false|null|Callback when the keyboard search button is clicked|
-|corner|FSearchCorner|false|null|Corner effect. See [FSearchCorner] for details|
-|cornerStyle|FSearchCornerStyle|false|null|Corner style. The default [FSearchCornerStyle.round]. See [FSearchCornerStyle] for details|
-|strokeColor|Color|false|null|Border color|
-|strokeWidth|double|false|null|border width|
-|backgroundColor|Color|false|null|background color|
-|gradient|Gradient|false|null|Background gradient. Will overwrite [backgroundColor]|
-|shadowColor|Color|false|null|Set widget shadow color|
-|shadowOffset|Offset|false|null|Set widget shadow color|
-|shadowBlur|double|false|null|Set the standard deviation of the widget Gaussian and shadow shape convolution|
-|cursorColor|Color|false|null|Cursor color|
-|cursorWidth|double|false|null|Cursor width|
-|cursorRadius|double|false|null|Cursor corner size|
-|prefixes|List<Widget>|false|null|Prefix action widget|
-|suffixes|List<Widget>|false|null|Suffix action widget|
-|padding|EdgeInsets|false|null|The distance between the actual input area and the edge of [FSearch]|
-|margin|EdgeInsets|false|null|[FSearch] outer spacing|
-|style|TextStyle|false|null|Input text style|
-|hintStyle|TextStyle|false|null|Hint text style|
-|hints|List<String>|false|null|Hint. If there is only one Hint, Hint swap animation cannot be enabled.|
-|hintSwitchDuration|Duration|false|null|Hint exchange interval|
-|hintSwitchAnimDuration|Duration|false|null|Hint swap animation time|
-|hintSwitchEnable|bool|false|null|Whether to enable Hint swap animation|
-|hintSwitchType|FSearchAnimationType|false|null|Hint exchanges animation types. The default [FSearchAnimationType.Scroll]. See [FSearchAnimationType] for details.|
-|stopHintSwitchOnFocus|bool|true|null|When the focus is obtained, whether to automatically stop the Hint exchange animation.|
-|hintPrefix|Widget|false|null|Hint prefix widget|
-|center|bool|false|null|Centered。|
+|controller|FSearchController|false|null|控制器。详见 [FSearchController]|
+|width|double|false|null|宽|
+|height|double|false|null|高|
+|text|String|false|null|输入内容|
+|onSearch|ValueChanged<String>|false|null|当点击键盘搜索按钮时会回调|
+|corner|FSearchCorner|false|null|边角效果。详见 [FSearchCorner]|
+|cornerStyle|FSearchCornerStyle|false|null|边角风格。默认 [FSearchCornerStyle.round]。详见 [FSearchCornerStyle]|
+|strokeColor|Color|false|null|边框颜色|
+|strokeWidth|double|false|null|边框宽|
+|backgroundColor|Color|false|null|背景颜色|
+|gradient|Gradient|false|null|背景渐变色。会覆盖 [backgroundColor]|
+|shadowColor|Color|false|null|设置组件阴影颜色|
+|shadowOffset|Offset|false|null|设置组件阴影偏移|
+|shadowBlur|double|false|null|设置组件高斯与阴影形状卷积的标准偏差|
+|cursorColor|Color|false|null|光标颜色|
+|cursorWidth|double|false|null|光标宽|
+|cursorRadius|double|false|null|光标边角大小|
+|prefixes|List<Widget>|false|null|前缀动作按钮|
+|suffixes|List<Widget>|false|null|后缀动作按钮|
+|padding|EdgeInsets|false|null|实际输入区域与 [FSearch] 边缘的间距|
+|margin|EdgeInsets|false|null|[FSearch] 的外间距|
+|style|TextStyle|false|null|输入文本风格|
+|hintStyle|TextStyle|false|null|Hint 文本风格|
+|hints|List<String>|false|null|Hint。如果只有一条 Hint，将无法启用 Hint 交换动画。|
+|hintSwitchDuration|Duration|false|null|Hint 交换时间间隔|
+|hintSwitchAnimDuration|Duration|false|null|Hint 交换动画时间|
+|hintSwitchEnable|bool|false|null|是否启用 Hint 交换动画|
+|hintSwitchType|FSearchAnimationType|false|null|Hint 交换动画类型。默认 [FSearchAnimationType.Scroll]。详见 [FSearchAnimationType]。|
+|stopHintSwitchOnFocus|bool|true|null|当获得焦点时，是否自动停止 Hint 交换动画。|
+|hintPrefix|Widget|false|null|Hint 前缀小部件|
+|center|bool|false|null|是否居中。|
 
 ### 💻 FSearchController
 
- **FSearchController** is the controller of **FSearch**, which can return to the input text, `Hint`, focus status and other information. At the same time provide a variety of monitoring and text update capabilities.
+ **FSearchController**  是  **FSearch**  的控制器，能够回去到输入的文本、 `Hint`、焦点状态等信息。同时提供各种监听和文本更新能力。
 
 
-#### 🔩 Param
+#### 🔩 参数
 
-|Param|Type|Desc|
+|参数|类型|说明|
 |---|---|---|
-|text|String|Input text|
-|hint|String|Current Hint text|
-|focus|bool|Focus state|
+|text|String|输入的文本内容|
+|hint|String|当前 Hint 内容|
+|focus|bool|焦点状态|
 
-#### 📲 Interface
+#### 📲 接口
 
 - `setListener(VoidCallback listener)`
 
-Set input monitor
+设置输入监听
 
 
 - `setOnFocusChangedListener(ValueChanged<bool> listener)`
 
-Set focus change monitoring
+设置焦点变化监听
 
 
 - `requestFocus()`
 
-Request focus
+请求获得焦点
 
 - `clearFocus()`
 
-Remove focus
+移除焦点
 
 ### 🎥 FSearchAnimationType
 
- **FSearchAnimationType** Used to specify the FSearch Hint exchange animation type.
+ **FSearchAnimationType** 用于指定 FSearch 的 Hint 交换动画类型。
 
 ```dart
 enum FSearchAnimationType {
@@ -172,7 +171,7 @@ enum FSearchAnimationType {
 }
 ```
 
-## 📺 Demo
+## 📺 使用示例
 
 ### 🔩 Base Demo
 
@@ -207,11 +206,11 @@ FSearch(
 )
 ```
 
-Using **FSearch** to build a search bar is very relaxing.
+使用  **FSearch**  来构建一个搜索栏是一件十分悠然自得的事。
 
-Through some simple parameters, developers can easily change the size, color, and font of the search bar.
+通过一些简单的参数，开发者能够很容易去改变搜索栏的大小、颜色、字体。
 
-When the user clicks on the keyboard to search for **Action**, onSearch will be triggered, allowing the developer to perform some search operations here.
+当用户点击键盘的搜索  **Action**  时，会触发 `onSearch`，使得开发者可以在这里进行一些搜索操作。
 
 
 ### 🌖 Prefixes & Suffixes
@@ -241,7 +240,7 @@ FSearch(
 )
 ```
 
-In FSearch, developers can configure any number of prefix or suffix action buttons for the search bar through the `prefixes` and `suffixes` parameters.
+在 FSearch 中，开发者可以通过 `prefixes` 和 `suffixes` 参数，为搜索栏分别配置任意个数的前缀或后缀动作按钮。
 
 
 ### 🌈 Gradient
@@ -262,9 +261,9 @@ FSearch(
 )
 ```
 
-**FSearch** can support developers to create a beautiful gradient search bar.
+ **FSearch**  能够支持开发者创建一个漂亮的渐变色搜索栏。
 
-Only need to configure through the `gradient` parameter.
+只需要通过 `gradient` 参数进行配置就行。
 
 ### 🍄 Corner & Stroke & Shadow
 
@@ -306,9 +305,9 @@ FSearch(
 )
 ```
 
-The **Border** and **Shadow** effects of **FSearch** are the same as those of other **FWidget** members, and are simple and easy to use.
+ **FSearch**  的  **边框** 和 **阴影** 效果和其它的  **FWidget**  成员一样，简单易用。
 
-Through the `corner` parameter, developers can use **FSearchCorner** to freely control the table corner size of **FSearch**.
+通过 `corner` 参数，开发者可以使用  **FSearchCorner**  随意的控制  **FSearch**  的表边角大小。
 
 ```dart
 /// #2
@@ -330,7 +329,7 @@ FSearch(
 )
 ```
 
-If combined with `cornerStyle`, more complex and exquisite effects can be achieved.
+如果配合  `cornerStyle`，可以实现更加复杂精美的效果。
 
 
 ### 📍 Cursor
@@ -355,7 +354,7 @@ FSearch(
 )
 ```
 
-**FSearch** supports modifying the cursor in the input box of the search bar. You can change it to whatever you want.
+ **FSearch**  支持通过对搜索栏输入框的光标进行修改。你想改成什么样，就改成什么样。
 
 
 
@@ -378,7 +377,7 @@ FSearch(
   hints: [
     "FSuper is awesome 👍",
     "Come to use FButton",
-    "You will love FSearch",
+    "You will love FRefresh",
   ],
 
   /// 开启 hint 交换动画
@@ -393,13 +392,13 @@ FSearch(
 )
 ```
 
-**FSearch** provides developers with a very powerful **Hint** effect.
+ **FSearch**  为开发者提供了非常强大的  **Hint**  效果。
 
-Developers can easily set multiple **Hint** for **FSearch**, and can configure multiple **Hint** swap animations by configuring `hintSwitchEnable: true`.
+开发者可以很容易的为  **FSearch**  设置多条  **Hint** ，而且可以通过配置 `hintSwitchEnable: true` 来开启多  **Hint**  交换动画。
 
-When the user starts typing, Hint will be automatically hidden, and the swap animation will also be stopped.
+当用户开始输入时，Hint 将会被自动隐藏，同时交换动画也会被停止。
 
-When the content of the search input box becomes empty again, Hint will appear again, and the exchange animation will start playing.
+当搜索输入框内容再次变为空时，Hint 将会再次出现，且开始播放交换动画。
 
 ```dart
 /// #2
@@ -420,11 +419,11 @@ FSearch(
 ```
 
 
-**FSearch** has prepared rich exchange animations for developers. By default, **FSearch** will use the most common scroll swap animation, which is `FSearchAnimationType.Scroll`.
+**FSearch**  为开发者准备了丰富的交换动画。默认情况下， **FSearch**  会使用最常见的翻滚交换动画，即  `FSearchAnimationType.Scroll`。
  
-Of course, developers can configure their favorite animation types through the `hintSwitchType` parameter.
+当然，开发者可以通过 `hintSwitchType` 参数来配置自己喜欢的动画类型。
 
-> 💡 Note that when `hints.length == 1`, the Hint swap animation will not be played. Only an ordinary Hint will be displayed at this time.
+> 💡 注意，当 `hints.length == 1` 时，将不会播放 Hint 交换动画。此时仅仅会展示一个普通的 Hint。
 
 
 ```dart
@@ -457,9 +456,9 @@ FSearch(
 )
 ```
 
-By default, when **FSearch** gains input focus, **FSearch** will automatically pause **Hint** to swap animations; when it gets focus again, it will resume automatically.
+默认情况下，当  **FSearch**  获得输入焦点， **FSearch**  会自动暂停  **Hint**  交换动画；再次获得焦点时，又会自动恢复。
 
-By configuring `stopHintSwitchOnFocus: false`, you can continue to play **Hint** swap animation until the user starts typing when **FSearch** has the focus.
+通过配置 `stopHintSwitchOnFocus: false`，可以让  **FSearch**  获得焦点的情况下，依旧继续播放  **Hint**  交换动画，直到用户开始输入.
 
 
  
@@ -512,32 +511,33 @@ controller.clearFocus();
 controller.requestFocus();
 ```
 
- **FSearch** provides developers with simple, easy-to-use, certain controllers, through which developers can modify or obtain the contents of the search bar at any location.
+ **FSearch**  为开发者们提供了简单好用的、确定的控制器，通过控制器开发者可以在任意的位置对搜索栏的内容进行修改，或者获取。
 
-# 😃 How to use？
+# 😃 如何使用？
 
-Add dependencies in the project `pubspec.yaml` file:
+在项目 `pubspec.yaml` 文件中添加依赖：
 
-## 🌐 pub dependency
+## 🌐 pub 依赖方式
 
 ```
 dependencies:
-  fsearch: ^<version number>
+  fsearch: ^<版本号>
 ```
 
-> ⚠️ Attention，please go to [**pub**] (https://pub.dev/packages/fsearch) to get the latest version number of **FSearch**
+> ⚠️ 注意，请到 [**pub**](https://pub.dev/packages/fsearch) 获取 **FSearch** 最新版本号
 
-## 🖥 Git dependency
+## 🖥 git 依赖方式
 
 ```
 dependencies:
   fsearch:
     git:
       url: 'git@github.com:Fliggy-Mobile/fsearch.git'
-      ref: '<Branch number or tag number>'
+      ref: '<分支号 或 tag>'
 ```
 
-> ⚠️ Attention，please refer to [**FSearch**] (https://github.com/Fliggy-Mobile/fsearch) official project for branch number or tag.
+
+> ⚠️ 注意，分支号 或 tag 请以 [**FSearch**](https://github.com/Fliggy-Mobile/fsearch) 官方项目为准。
 
 
 # 💡 License
@@ -560,19 +560,19 @@ limitations under the License.
 ```
 
 
-### Like it? Please cast your [**Star**](https://github.com/Fliggy-Mobile/fsearch) 🥰 ！
+### 感觉还不错？请投出您的 [**Star**](https://github.com/Fliggy-Mobile/fsearch) 吧 🥰 ！
 
 
 ---
 
-# How to run Demo project?
+# 如何运行 Demo 工程？
 
-1. **clone** project to local
+1.**clone** 工程到本地
 
-2. Enter the project `example` directory and run the following command
+2.进入工程 `example` 目录，运行以下命令
 
 ```
 flutter create .
 ```
 
-3. Run the demo in `example`
+3.运行 `example` 中的 Demo

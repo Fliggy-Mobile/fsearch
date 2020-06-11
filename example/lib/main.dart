@@ -80,7 +80,7 @@ class _MyAppState extends State<MyApp> {
                 buildBigMargin(),
 
                 /// demo1
-                buildDemo1(context),
+                buildDemo1(),
 
                 buildBigMargin(),
                 buildTitle("Prefixes & Suffixes"),
@@ -143,7 +143,7 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Widget buildDemo1(BuildContext context) {
+  Widget buildDemo1() {
     return StatefulBuilder(builder: (context, setState) {
       return PageWidget(
         searching: searching1,
