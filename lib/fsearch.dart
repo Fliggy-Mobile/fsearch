@@ -418,7 +418,6 @@ class _FSearchState extends State<FSearch> {
 
     if (showHint) {
       if (widget.hintSwitchEnable && inputHeight != null) {
-        int index = hintIndex == -1 ? 0 : hintIndex;
         if (widget.hintSwitchType == FSearchAnimationType.Fade) {
           Widget hintSwitcher = buildFadeSwitcher();
           children.add(hintSwitcher);
