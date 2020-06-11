@@ -27,69 +27,160 @@ enum FSearchAnimationType {
 /// [FSearch] is used to process the search module. Support many configuration effects such as border, corner, background and so on.
 /// Support multiple [hint] switching animations of different styles.
 class FSearch extends StatefulWidget {
-  /// 详见 [FSearchController]
+  /// 控制器。详见 [FSearchController]
   ///
-  /// See [FSearchController] for details
+  /// Controller.See [FSearchController] for details
   final FSearchController controller;
 
+  /// 宽。
+  ///
+  /// Width
   final double width;
 
+  /// 高
+  ///
+  /// Height
   final double height;
 
+  /// 输入内容
+  ///
+  /// input content
   final String text;
 
+  /// 当点击键盘搜索按钮时会回调
+  ///
+  /// Callback when the keyboard search button is clicked
   final ValueChanged<String> onSearch;
 
+  /// 边角效果。详见 [FSearchCorner]
+  ///
+  /// Corner effect. See [FSearchCorner] for details
   final FSearchCorner corner;
 
-  final Color strokeColor;
-
-  final double strokeWidth;
-
+  /// 边角风格。默认 [FSearchCornerStyle.round]。详见 [FSearchCornerStyle]
+  ///
+  /// Corner style. The default [FSearchCornerStyle.round]. See [FSearchCornerStyle] for details
   final FSearchCornerStyle cornerStyle;
 
+  /// 边框颜色
+  ///
+  /// stroke color
+  final Color strokeColor;
+
+  /// 边框宽
+  ///
+  /// stroke width
+  final double strokeWidth;
+
+  /// 背景颜色
+  ///
+  /// background color
   final Color backgroundColor;
 
+  /// 背景渐变色。会覆盖 [backgroundColor]
+  ///
+  /// Background gradient. Will overwrite [backgroundColor]
   final Gradient gradient;
 
-  final double shadowBlur;
-
+  /// 设置组件阴影颜色
+  ///
+  /// Set component shadow color
   final Color shadowColor;
 
+  /// 设置组件阴影偏移
+  ///
+  /// Set component shadow offset
   final Offset shadowOffset;
 
+  /// 设置组件高斯与阴影形状卷积的标准偏差。
+  ///
+  /// Sets the standard deviation of the component's Gaussian convolution with the shadow shape.
+  final double shadowBlur;
+
+  /// 光标颜色
+  ///
+  /// Cursor color
   final Color cursorColor;
 
+  /// 光标宽
+  ///
+  /// cursor width
   final double cursorWidth;
 
+  /// 光标边角大小
+  ///
+  /// Cursor corner size
   final double cursorRadius;
 
-  final TextStyle style;
-
-  final TextStyle hintStyle;
-
+  /// 前缀动作按钮
+  ///
+  /// Prefix action button
   final List<Widget> prefixes;
 
+  /// 后缀动作按钮
+  ///
+  /// Suffix action button
   final List<Widget> suffixes;
 
+  /// 实际输入区域与 [FSearch] 边缘的间距
+  ///
+  /// The distance between the actual input area and the edge of [FSearch]
   final EdgeInsets padding;
 
+  /// [FSearch] 的外间距
+  ///
+  /// [FSearch] outer spacing
   final EdgeInsets margin;
 
+  /// 输入文本风格
+  ///
+  /// Input text style
+  final TextStyle style;
+
+  /// Hint 文本风格
+  ///
+  /// Hint text style
+  final TextStyle hintStyle;
+
+
+  /// Hint。如果只有一条 Hint，将无法启用 Hint 交换动画。
+  ///
+  /// Hint. If there is only one Hint, Hint swap animation cannot be enabled.
   final List<String> hints;
 
+  /// Hint 交换时间间隔
+  ///
+  /// Hint exchange interval
   final Duration hintSwitchDuration;
 
+  /// Hint 交换动画时间
+  ///
+  /// Hint swap animation time
   final Duration hintSwitchAnimDuration;
 
+  /// 是否启用 Hint 交换动画
+  ///
+  /// Whether to enable Hint swap animation
   final bool hintSwitchEnable;
 
-  final bool stopHintSwitchOnFocus;
-
-  final Widget hintPrefix;
-
+  /// Hint 交换动画类型。默认 [FSearchAnimationType.Scroll]。详见 [FSearchAnimationType]。
+  ///
+  /// Hint exchanges animation types. The default [FSearchAnimationType.Scroll]. See [FSearchAnimationType] for details.
   final FSearchAnimationType hintSwitchType;
 
+  /// 当获得焦点时，是否自动停止 Hint 交换动画。默认 true。
+  ///
+  /// When the focus is obtained, whether to automatically stop the Hint exchange animation. The default is true.
+  final bool stopHintSwitchOnFocus;
+
+  /// Hint 前缀小部件
+  ///
+  /// Hint prefix widget
+  final Widget hintPrefix;
+
+  /// 是否居中。
+  ///
+  /// Is it centered
   final bool center;
 
   FSearch({
@@ -616,11 +707,21 @@ class _FSearchState extends State<FSearch> {
   }
 }
 
+/// [FSearch] 的控制器，能够回去到输入的文本、Hint、焦点状态等信息。同时提供各种监听和文本更新能力。
+///
+/// The controller of [FSearch] can go back to the input text, Hint, focus status and other information.
+/// At the same time provide a variety of monitoring and text update capabilities.
 class FSearchController {
   _FSearchState _state;
 
+  /// 输入的文本内容
+  ///
+  /// input text
   String get text => (_state?.controller?.value?.text) ?? null;
 
+  /// 主动更新输入文本
+  ///
+  /// Actively update input text
   set text(String value) {
     if (_state?.controller?.text != value) {
       _state?.controller?.clear();
@@ -631,30 +732,51 @@ class FSearchController {
     }
   }
 
+  /// 当前 Hint 内容
+  ///
+  /// Current Hint content
   String get hint => (_state?.hint) ?? null;
 
+  /// 焦点状态
+  ///
+  /// Focus state
   bool get focus => (_state?.focusNode?.hasFocus) ?? false;
 
   ValueChanged<bool> _focusListener;
 
   VoidCallback _listener;
 
+  /// 设置输入监听
+  ///
+  /// Set input listener
   setListener(VoidCallback listener) {
     _listener = listener;
   }
 
+  /// 设置焦点变化监听
+  ///
+  /// set focus changed listener
   setOnFocusChangedListener(ValueChanged<bool> listener) {
     _focusListener = listener;
   }
 
+  /// 请求获得焦点
+  ///
+  /// request focus
   requestFocus() {
     _state?.focusNode?.requestFocus();
   }
 
+  /// 移除焦点
+  ///
+  /// clear focus
   clearFocus() {
     _state?.focusNode?.unfocus();
   }
 
+  /// 销毁
+  ///
+  /// destroy
   dispose() {
     _state = null;
   }
