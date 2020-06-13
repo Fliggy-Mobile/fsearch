@@ -292,7 +292,7 @@ class _FSearchState extends State<FSearch> {
             playHintSwitchAnim();
           } else {
             switchTimer?.cancel();
-            tryFixScrollAnim();
+            tryToFixScrollAnim();
           }
         });
       }
@@ -322,7 +322,7 @@ class _FSearchState extends State<FSearch> {
     super.initState();
   }
 
-  void tryFixScrollAnim() {
+  void tryToFixScrollAnim() {
     if (widget.hintSwitchType == FSearchAnimationType.Scroll &&
         scrollAnimPlaying) {
       scrollAnimPlaying = false;
@@ -638,9 +638,10 @@ class _FSearchState extends State<FSearch> {
           }
           return hintTop;
         }
-
+        
         setState(() {
           scrollAnimPlaying = true;
+          if (hintSwitchTop_0 == hintSwitchTop_1) tryToFixScrollAnim();
           nextHintIndex =
               (nextHintIndex + 1 == hints.length ? 0 : nextHintIndex + 1);
           int nextIndex =
