@@ -42,6 +42,16 @@ class FSearch extends StatefulWidget {
   /// Height
   final double height;
 
+  /// 是否可用
+  ///
+  /// enable
+  final bool enable;
+
+  /// 当输入框被点击时会回调
+  ///
+  /// Callback when the input box is clicked
+  final VoidCallback onTap;
+
   /// 输入内容
   ///
   /// input content
@@ -142,7 +152,6 @@ class FSearch extends StatefulWidget {
   /// Hint text style
   final TextStyle hintStyle;
 
-
   /// Hint。如果只有一条 Hint，将无法启用 Hint 交换动画。
   ///
   /// Hint. If there is only one Hint, Hint swap animation cannot be enabled.
@@ -216,6 +225,8 @@ class FSearch extends StatefulWidget {
     this.controller,
     this.hintSwitchType = FSearchAnimationType.Scroll,
     this.onSearch,
+    this.enable = true,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -225,7 +236,7 @@ class FSearch extends StatefulWidget {
 class _FSearchState extends State<FSearch> {
   String hint_0;
   String hint_1;
-  int hintIndex = -1;
+  int nextHintIndex = -1;
   double hintSwitchTop_0;
   double hintSwitchTop_1;
   int scrollHintCurrentIndex = 0;
@@ -245,7 +256,7 @@ class _FSearchState extends State<FSearch> {
   String get hint {
     String r;
     if (widget.hints != null && widget.hints.length > 0) {
-      int index = hintIndex + 1;
+      int index = nextHintIndex + 1;
       if (index > -1 && index < widget.hints.length) {
         r = widget.hints[index];
       } else {
@@ -338,7 +349,7 @@ class _FSearchState extends State<FSearch> {
 
   @override
   Widget build(BuildContext context) {
-    initInputHeight();
+    initInputSize();
     Decoration decoration = buildDecoration();
     List<Widget> children = [];
 
@@ -376,14 +387,15 @@ class _FSearchState extends State<FSearch> {
     );
   }
 
-  void initInputHeight() {
-    if (inputHeight != null) return;
+  void initInputSize() {
+//    if (inputHeight != null) return;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (!mounted) return;
       RenderBox box = inputKey.currentContext?.findRenderObject();
       if (widget.hints != null &&
           widget.hints.length > 1 &&
-          inputHeight != box.size.height) {
+          inputHeight != box.size.height &&
+          inputWidth != box.size.width) {
         setState(() {
           inputHeight = box.size.height;
           inputWidth = box.size.width;
@@ -402,8 +414,8 @@ class _FSearchState extends State<FSearch> {
 
     TextStyle style = widget.style ?? buildDefaultTextStyle();
     Widget textField = TextField(
-      focusNode: focusNode,
       key: inputKey,
+      focusNode: focusNode,
       controller: controller,
       textAlign: widget.center ? TextAlign.center : TextAlign.start,
       textInputAction: TextInputAction.search,
@@ -413,6 +425,12 @@ class _FSearchState extends State<FSearch> {
       cursorWidth: widget.cursorWidth,
       cursorRadius: Radius.circular(widget.cursorRadius),
       onSubmitted: widget.onSearch,
+      onTap: () {
+        widget.onTap?.call();
+        if (!widget.enable) {
+          focusNode.unfocus();
+        }
+      },
     );
     children.add(textField);
 
@@ -477,6 +495,11 @@ class _FSearchState extends State<FSearch> {
 
   AnimatedPositioned buildScrollSwitch_2() {
     TextStyle style = widget.style ?? buildDefaultTextStyle();
+    Widget child = Text(
+      hint_1,
+      style: widget.hintStyle ?? style.copyWith(color: Colors.grey),
+      overflow: TextOverflow.ellipsis,
+    );
     return AnimatedPositioned(
       top: hintSwitchTop_1,
       child: IgnorePointer(
@@ -486,14 +509,7 @@ class _FSearchState extends State<FSearch> {
             height: inputHeight,
             width: inputWidth,
             alignment: widget.center ? Alignment.center : Alignment.centerLeft,
-            child: Text(
-              hint_1,
-              style: widget.hintStyle ??
-                  style.copyWith(
-                    color: Colors.grey,
-                  ),
-              overflow: TextOverflow.ellipsis,
-            ),
+            child: child,
           ),
         ),
       ),
@@ -513,6 +529,11 @@ class _FSearchState extends State<FSearch> {
 
   Widget buildScrollSwitch_1() {
     TextStyle style = widget.style ?? buildDefaultTextStyle();
+    Widget child = Text(
+      hint_0,
+      style: widget.hintStyle ?? style.copyWith(color: Colors.grey),
+      overflow: TextOverflow.ellipsis,
+    );
     return AnimatedPositioned(
       top: hintSwitchTop_0,
       child: IgnorePointer(
@@ -521,14 +542,7 @@ class _FSearchState extends State<FSearch> {
           child: Container(
             height: inputHeight,
             alignment: widget.center ? Alignment.center : Alignment.centerLeft,
-            child: Text(
-              hint_0,
-              style: widget.hintStyle ??
-                  style.copyWith(
-                    color: Colors.grey,
-                  ),
-              overflow: TextOverflow.ellipsis,
-            ),
+            child: child,
           ),
         ),
       ),
@@ -548,22 +562,20 @@ class _FSearchState extends State<FSearch> {
   }
 
   Widget buildScaleSwitcher() {
-    int index = hintIndex == -1 ? 0 : hintIndex;
+    int index = nextHintIndex == -1 ? 0 : nextHintIndex;
     TextStyle style = widget.style ?? buildDefaultTextStyle();
+    Widget child = Text(
+      widget.hints[index],
+      style: widget.hintStyle ?? style.copyWith(color: Colors.grey),
+      overflow: TextOverflow.ellipsis,
+    );
     return AnimatedSwitcher(
       child: IgnorePointer(
         key: ValueKey(index),
         child: Container(
           alignment: widget.center ? Alignment.center : Alignment.centerLeft,
           height: inputHeight,
-          child: Text(
-            widget.hints[index],
-            style: widget.hintStyle ??
-                style.copyWith(
-                  color: Colors.grey,
-                ),
-            overflow: TextOverflow.ellipsis,
-          ),
+          child: child,
         ),
       ),
       duration: widget.hintSwitchAnimDuration,
@@ -576,22 +588,20 @@ class _FSearchState extends State<FSearch> {
   }
 
   Widget buildFadeSwitcher() {
-    int index = hintIndex == -1 ? 0 : hintIndex;
+    int index = nextHintIndex == -1 ? 0 : nextHintIndex;
     TextStyle style = widget.style ?? buildDefaultTextStyle();
+    Widget child = Text(
+      widget.hints[index],
+      style: widget.hintStyle ?? style.copyWith(color: Colors.grey),
+      overflow: TextOverflow.ellipsis,
+    );
     Widget hintSwitcher = AnimatedSwitcher(
       child: IgnorePointer(
         key: ValueKey(index),
         child: Container(
           height: inputHeight,
           alignment: widget.center ? Alignment.center : Alignment.centerLeft,
-          child: Text(
-            widget.hints[index],
-            style: widget.hintStyle ??
-                style.copyWith(
-                  color: Colors.grey,
-                ),
-            overflow: TextOverflow.ellipsis,
-          ),
+          child: child,
         ),
       ),
       duration: widget.hintSwitchAnimDuration,
@@ -605,9 +615,7 @@ class _FSearchState extends State<FSearch> {
         inputHeight == null ||
         widget.hints == null ||
         widget.hints.length < 2) return;
-    if (switchTimer != null) {
-      switchTimer.cancel();
-    }
+    switchTimer?.cancel();
     switchTimer = Timer(widget.hintSwitchDuration, () {
       if (!mounted &&
           showHint &&
@@ -616,7 +624,8 @@ class _FSearchState extends State<FSearch> {
       List<String> hints = widget.hints;
       if (widget.hintSwitchType != FSearchAnimationType.Scroll) {
         setState(() {
-          hintIndex = (hintIndex + 1 == hints.length ? 0 : hintIndex + 1);
+          nextHintIndex =
+              (nextHintIndex + 1 == hints.length ? 0 : nextHintIndex + 1);
         });
       } else {
         double switchHintTop(double hintTop) {
@@ -632,17 +641,19 @@ class _FSearchState extends State<FSearch> {
 
         setState(() {
           scrollAnimPlaying = true;
-          hintIndex = (hintIndex + 1 == hints.length ? 0 : hintIndex + 1);
-          int nextIndex = (hintIndex + 1 == hints.length ? 0 : hintIndex + 1);
+          nextHintIndex =
+              (nextHintIndex + 1 == hints.length ? 0 : nextHintIndex + 1);
+          int nextIndex =
+              (nextHintIndex + 1 == hints.length ? 0 : nextHintIndex + 1);
           if (hintSwitchTop_0 == inputHeight) {
             hint_0 = hints[nextIndex];
           } else {
-            hint_0 = hints[hintIndex];
+            hint_0 = hints[nextHintIndex];
           }
           if (hintSwitchTop_1 == inputHeight) {
             hint_1 = hints[nextIndex];
           } else {
-            hint_1 = hints[hintIndex];
+            hint_1 = hints[nextHintIndex];
           }
           hintSwitchTop_0 = switchHintTop(hintSwitchTop_0);
           if (hintSwitchTop_0 == 0) {

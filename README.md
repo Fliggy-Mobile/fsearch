@@ -87,6 +87,8 @@
 |controller|FSearchController|false|null|Controller. See [FSearchController] for details|
 |width|double|false|null|width|
 |height|double|false|null|height|
+|enable|bool|false|true|enable|
+|onTap|VoidCallback|false|null|Callback when the input box is clicked|
 |text|String|false|null|Input content|
 |onSearch|ValueChanged<String>|false|null|Callback when the keyboard search button is clicked|
 |corner|FSearchCorner|false|null|Corner effect. See [FSearchCorner] for details|

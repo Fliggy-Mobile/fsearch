@@ -86,6 +86,8 @@
 |controller|FSearchController|false|null|控制器。详见 [FSearchController]|
 |width|double|false|null|宽|
 |height|double|false|null|高|
+|enable|bool|false|true|是否可用|
+|onTap|VoidCallback|false|null|当输入框被点击时会回调|
 |text|String|false|null|输入内容|
 |onSearch|ValueChanged<String>|false|null|当点击键盘搜索按钮时会回调|
 |corner|FSearchCorner|false|null|边角效果。详见 [FSearchCorner]|
