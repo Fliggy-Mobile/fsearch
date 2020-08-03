@@ -30,6 +30,8 @@ dependencies:
   ffloat: ^1.0.1
   frefresh: ^1.1.0
   fdottedline: ^1.0.0
+  ftoast: ^1.0.0
+  floading: ^1.0.2
 
 dev_dependencies:
   flutter_test:

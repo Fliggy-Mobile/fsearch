@@ -7,6 +7,7 @@ import 'package:fsearch/fsearch.dart';
 import 'package:fsearch_example/color.dart';
 import 'package:fsearch_example/part.dart';
 import 'package:fsuper/fsuper.dart';
+import 'package:ftoast/ftoast.dart';
 
 void main() {
   runApp(MyApp());
@@ -531,7 +532,7 @@ class _MyAppState extends State<MyApp> {
                 suffixes: [
                   FButton(
                     onPressed: () {
-                      dialog(context, "Speaking...");
+                      FToast.toast(context, msg: "Speaking");
                     },
                     padding: EdgeInsets.only(left: 12.0, right: 12.0),
                     effect: true,
@@ -597,7 +598,7 @@ class _MyAppState extends State<MyApp> {
                 suffixes: [
                   FButton(
                     onPressed: () {
-                      dialog(context, "Smile 😊");
+                      FToast.toast(context, msg: "Smile 😊");
                     },
                     padding: EdgeInsets.only(left: 3.0, right: 3.0),
                     effect: true,
@@ -619,6 +620,7 @@ class _MyAppState extends State<MyApp> {
                         searching6_1 = true;
                       });
                     },
+                    alignment: Alignment.center,
                     padding: EdgeInsets.only(left: 6.0, right: 6.0),
                     corner: FButtonCorner.all(15.0),
                     effect: true,
@@ -675,7 +677,9 @@ class _MyAppState extends State<MyApp> {
                 suffixes: [
                   FButton(
                     text: "Inquire",
+                    height: double.infinity,
                     textColor: Colors.white,
+                    alignment: Alignment.center,
                     fontSize: 10.0,
                     corner: FButtonCorner(
                         leftTopCorner: 5.0,
@@ -686,7 +690,7 @@ class _MyAppState extends State<MyApp> {
                     onPressed: () {
                       dialog(context, "Inquiry...");
                     },
-                    padding: EdgeInsets.only(left: 14.0, right: 12.0),
+                    padding: EdgeInsets.only(left: 14.0, right: 14.0),
                     effect: true,
                     color: Colors.blue[300],
                   )

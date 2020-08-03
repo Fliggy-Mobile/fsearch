@@ -419,7 +419,35 @@ class _FSearchState extends State<FSearch> {
       controller: controller,
       textAlign: widget.center ? TextAlign.center : TextAlign.start,
       textInputAction: TextInputAction.search,
-      decoration: InputDecoration.collapsed(hintText: ""),
+      textAlignVertical: TextAlignVertical.center,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderSide: BorderSide(style: BorderStyle.none),
+          gapPadding: 0.0,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(style: BorderStyle.none),
+          gapPadding: 0.0,
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(style: BorderStyle.none),
+          gapPadding: 0.0,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(style: BorderStyle.none),
+          gapPadding: 0.0,
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(style: BorderStyle.none),
+          gapPadding: 0.0,
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(style: BorderStyle.none),
+          gapPadding: 0.0,
+        ),
+        contentPadding: EdgeInsets.all(0),
+        isDense: true,
+      ),
       style: style,
       cursorColor: widget.cursorColor,
       cursorWidth: widget.cursorWidth,
@@ -432,7 +460,10 @@ class _FSearchState extends State<FSearch> {
         }
       },
     );
-    children.add(textField);
+    children.add(Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[textField],
+    ));
 
     if (showHint) {
       if (widget.hintSwitchEnable && inputHeight != null) {
@@ -638,7 +669,7 @@ class _FSearchState extends State<FSearch> {
           }
           return hintTop;
         }
-        
+
         setState(() {
           scrollAnimPlaying = true;
           if (hintSwitchTop_0 == hintSwitchTop_1) tryToFixScrollAnim();
