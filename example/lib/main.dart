@@ -71,7 +71,9 @@ class _MyAppState extends State<MyApp> {
           centerTitle: true,
         ),
         body: Builder(builder: (context) {
-          return SingleChildScrollView(
+          return GestureDetector(behavior: HitTestBehavior.translucent ,onTap: ()async{
+            FocusScope.of(context).requestFocus(FocusNode());
+            } ,child:SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -138,7 +140,7 @@ class _MyAppState extends State<MyApp> {
                 buildBiggestMargin(),
               ],
             ),
-          );
+          ));
         }),
       ),
     );
