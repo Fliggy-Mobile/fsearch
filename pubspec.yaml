@@ -1,11 +1,11 @@
 name: fsearch
 description: To help developers build the most beautiful search bar.
-version: 1.0.1
+version: 2.0.0
 author: CoorChice<coorchice.cb@alibaba-inc.com>
 homepage: https://github.com/Fliggy-Mobile/fsearch
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
   flutter: ">=1.10.0"
 
 dependencies:
