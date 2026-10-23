@@ -342,6 +342,7 @@ class _FSearchState extends State<FSearch> {
 
   @override
   void dispose() {
+    switchTimer?.cancel();
     controller.dispose();
     focusNode.dispose();
     super.dispose();
@@ -393,17 +394,19 @@ class _FSearchState extends State<FSearch> {
       if (!mounted) return;
       RenderBox box = inputKey.currentContext?.findRenderObject() as RenderBox;
       if (widget.hints != null &&
-          widget.hints!.length > 1 &&
-          inputHeight != box.size.height &&
-          inputWidth != box.size.width) {
+          widget.hints!.length > 0 &&
+          (inputHeight != box.size.height ||
+              inputWidth != box.size.width)) {
         setState(() {
           inputHeight = box.size.height;
           inputWidth = box.size.width;
-          hintSwitchTop_0 = 0;
-          hintSwitchTop_1 = inputHeight;
-          hint_0 = widget.hints![0];
-          hint_1 = widget.hints![1];
-          playHintSwitchAnim();
+          if (widget.hints!.length > 1) {
+            hintSwitchTop_0 = 0;
+            hintSwitchTop_1 = inputHeight;
+            hint_0 = widget.hints![0];
+            hint_1 = widget.hints![1];
+            playHintSwitchAnim();
+          }
         });
       }
     });
@@ -466,7 +469,10 @@ class _FSearchState extends State<FSearch> {
     ));
 
     if (showHint) {
-      if (widget.hintSwitchEnable && inputHeight != null) {
+      if (widget.hintSwitchEnable &&
+          widget.hints != null &&
+          widget.hints!.length > 1 &&
+          inputHeight != null) {
         if (widget.hintSwitchType == FSearchAnimationType.Fade) {
           Widget hintSwitcher = buildFadeSwitcher();
           children.add(hintSwitcher);
@@ -711,6 +717,7 @@ class _FSearchState extends State<FSearch> {
     BorderRadius borderRadius = widget.corner == null
         ? BorderRadius.all(Radius.circular(0))
         : BorderRadius.only(
+            topLeft: Radius.circular(widget.corner!.leftTopCorner),
             topRight: Radius.circular(widget.corner!.rightTopCorner),
             bottomRight: Radius.circular(widget.corner!.rightBottomCorner),
             bottomLeft: Radius.circular(widget.corner!.leftBottomCorner),
