@@ -3,6 +3,7 @@
 - Fix the issue that a single hint is not displayed
 - Fix the issue that leftTopCorner does not take effect
 - Cancel the hint switch timer on dispose to avoid a timer leak
+- Update sdk constraint to support Dart 3
 
 ## 2.0.0
 - Support null-safety
